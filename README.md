@@ -24,7 +24,7 @@ TODO: Write usage instructions here
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/tagomoris/tonkotsu.
+Bug reports and pull requests are welcome on GitHub at https://github.com/asakusarb/tonkotsu.
 
 ## License
 
