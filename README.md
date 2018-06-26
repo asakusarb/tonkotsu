@@ -1,4 +1,4 @@
-# Tonkotsu
+# Tonkotsu [![Build Status](https://travis-ci.org/asakusarb/tonkotsu.svg?branch=master)](https://travis-ci.org/asakusarb/tonkotsu)
 
 Tonkotsu is a kind of proof-of-concept to implement `defer` (of golang) in Ruby.
 
