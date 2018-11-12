@@ -32,14 +32,24 @@ class DeferTest < ::Test::Unit::TestCase
     end
   end
 
-  # TODO: fix test case naem
-  test 'toplevel defer works as expected' do
-    buffer = String.new
-    a = Underlying.new("a", buffer)
-    b = Underlying.new("b", buffer)
-    c = Underlying.new("c", buffer)
-    Consumer.new.yay(buffer, a, b, c)
+  # TODO: fix test case name
+  # test 'toplevel defer works as expected' do
+  #   buffer = String.new
+  #   a = Underlying.new("a", buffer)
+  #   b = Underlying.new("b", buffer)
+  #   c = Underlying.new("c", buffer)
+  #   Consumer.new.yay(buffer, a, b, c)
 
-    assert_equal "c2;y2;x1;b0;a0;"
+  #   assert_equal "c2;y2;x1;b0;a0;"
+  # end
+
+  test 'trying raw defer' do
+    b = String.new
+    u0 = Underlying.new("v", b)
+    f = defer { u0.close(1 + 2) }
+    assert_equal "", b
+    f.resume
+    assert_equal "v3;", b
   end
 end
+
