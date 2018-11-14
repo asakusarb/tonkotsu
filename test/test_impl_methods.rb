@@ -3,7 +3,7 @@ require "tonkotsu"
 
 class DeferImplTest < ::Test::Unit::TestCase
   def test_find_first_method_call_with_receiver
-    t = Tonkotsu::Impl
+    t = Tonkotsu::Impl::Backend
     assert_nil t.find_first_method_call_with_receiver(->(){ })
     assert_nil t.find_first_method_call_with_receiver(->(){ p "yay" })
     assert_nil t.find_first_method_call_with_receiver(->(){ say("hello") })

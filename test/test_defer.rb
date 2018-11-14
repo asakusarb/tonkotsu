@@ -32,24 +32,45 @@ class DeferTest < ::Test::Unit::TestCase
     end
   end
 
-  # TODO: fix test case name
-  # test 'toplevel defer works as expected' do
-  #   buffer = String.new
-  #   a = Underlying.new("a", buffer)
-  #   b = Underlying.new("b", buffer)
-  #   c = Underlying.new("c", buffer)
-  #   Consumer.new.yay(buffer, a, b, c)
+  test 'defer works with blocks' do
+    s = String.new
+    b = ->(){
+      u = Underlying.new("a", s)
+      defer { u.close("0") }
+      1.times do |i|
+        u1 = Underlying.new("b", s)
+        defer { u1.close(i.to_s) }
+      end
+    }
+    b.call
+    assert_equal "b0;a0;", s
+  end
 
-  #   assert_equal "c2;y2;x1;b0;a0;"
-  # end
+  test 'defer works with methods' do
+    buffer = String.new
+    a = Underlying.new("a", buffer)
+    b = Underlying.new("b", buffer)
+    c = Underlying.new("c", buffer)
+    Consumer.new.yay(buffer, a, b, c)
 
-  test 'trying raw defer' do
-    b = String.new
-    u0 = Underlying.new("v", b)
-    f = defer { u0.close(1 + 2) }
-    assert_equal "", b
-    f.resume
-    assert_equal "v3;", b
+    assert_equal "c2;y2;x1;b0;a0;", buffer
+  end
+
+  test 'defer works well even when #close raises exception' do
+    s = String.new
+    b = ->(){
+      u = Underlying.new("a", s)
+      defer { u.close("0") }
+      1.times do |i|
+        u1 = Underlying.new("b", s)
+        u1.singleton_class.define_method(:close) do |*args|
+          raise "exception"
+        end
+        defer { u1.close(i.to_s) }
+      end
+    }
+    b.call
+    assert_equal "a0;", s
   end
 end
 
